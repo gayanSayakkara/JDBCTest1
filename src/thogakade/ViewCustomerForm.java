@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -111,18 +112,14 @@ public class ViewCustomerForm extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         try {
-            String SQL = "SELECT * FROM customer";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            ResultSet rst = stm.executeQuery();
+            ArrayList<Customer>customerList = CustomerController.viewCustomer();
             DefaultTableModel dtm= (DefaultTableModel) JTable.getModel();
             dtm.setRowCount(0);
-            while(rst.next()){
-                Object[] rowDat={rst.getString("id"),rst.getString("name"),rst.getString("address"),rst.getDouble("salary")};
+            for (Customer customer : customerList) {
+                Object[] rowDat={customer.getId(),customer.getName(),customer.getAddress(),customer.getSalary()};
                 dtm.addRow(rowDat);
-                //JOptionPane.showMessageDialog(this, "Updated");
             }
+           
             JOptionPane.showMessageDialog(this, "Updated");
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());

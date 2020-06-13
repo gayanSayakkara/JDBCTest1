@@ -202,22 +202,18 @@ public class AddCustomerForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cusSalTextFieldActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        
         try {
-            String SQL = "INSERT INTO customer VALUES(?,?,?,?)";
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ThogaKade", "root", "mysql");
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
+            String id = cusIdTextField.getText();
+            String name = cusNameTextField.getText();
+            String address = cusAddTextField.getText();
+            double salary = Double.parseDouble(cusSalTextField.getText());
             
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            
-            stm.setObject(1, cusIdTextField.getText());
-            stm.setObject(2, cusNameTextField.getText());
-            stm.setObject(3, cusAddTextField.getText());
-            stm.setObject(4, Double.parseDouble(cusSalTextField.getText()));
-            int res = stm.executeUpdate();
-            
-            if (res>0) {
+//            Customer customer = new Customer(id, name, address, salary);
+//            boolean isAdded = CustomerController.addCustomer(customer);
+            boolean isAdded = CustomerController.addCustomer(new Customer(id, name, address, salary));
+
+            if (isAdded) {
                 cusIdTextField.setText("");
                 cusNameTextField.setText("");
                 cusAddTextField.setText("");

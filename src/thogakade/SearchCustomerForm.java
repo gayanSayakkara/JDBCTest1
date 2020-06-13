@@ -204,17 +204,13 @@ public class SearchCustomerForm extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
-            String SQL = "SELECT * FROM customer WHERE id=?";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, cusIdTextField.getText());
-            ResultSet rst = stm.executeQuery();
 
-            if (rst.next()) {
-                cusNameTextField.setText(rst.getString("name"));
-                cusAddTextField.setText(rst.getString("address"));
-                cusSalTextField.setText(rst.getString("salary"));
+            String id = cusIdTextField.getText();
+            Customer customer = CustomerController.searchCustomer(id);
+            if (customer!=null) {
+                cusNameTextField.setText(customer.getName());
+                cusAddTextField.setText(customer.getAddress());
+                cusSalTextField.setText(customer.getSalary()+"");
             }else{
                 cusNameTextField.setText("");
                 cusAddTextField.setText("");

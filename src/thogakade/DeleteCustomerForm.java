@@ -188,17 +188,13 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
 
     private void cusIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusIdTextFieldActionPerformed
         try {
-            String SQL = "SELECT * FROM customer WHERE id=?";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, cusIdTextField.getText());
-            ResultSet rst = stm.executeQuery();
+            String id = cusIdTextField.getText();
+            Customer customer = CustomerController.searchCustomer(id);
 
-            if (rst.next()) {
-                cusNameTextField.setText(rst.getString("name"));
-                cusAddTextField.setText(rst.getString("address"));
-                cusSalTextField.setText(rst.getString("salary"));
+            if (customer!=null) {
+                cusNameTextField.setText(customer.getName());
+                cusAddTextField.setText(customer.getAddress());
+                cusSalTextField.setText(customer.getSalary()+"");
             }else{
                 JOptionPane.showMessageDialog(this, "No customer found...");
             }
@@ -221,14 +217,10 @@ public class DeleteCustomerForm extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            String SQL = "DELETE FROM customer WHERE id=?";
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ThogaKade", "root", "mysql");
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, cusIdTextField.getText());
-            int result = stm.executeUpdate();
-
-            if (result>0) {
+            String id = cusIdTextField.getText();
+            boolean isDeleted = CustomerController.deleteCustomer(id);
+                     
+            if (isDeleted) {
                 JOptionPane.showMessageDialog(this, "Deleted");
                 cusIdTextField.setText("");
                 cusNameTextField.setText("");
