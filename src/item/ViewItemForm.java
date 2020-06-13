@@ -1,4 +1,4 @@
-package thogakade;
+package item;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import thogakade.DBConnection;
 
 public class ViewItemForm extends javax.swing.JFrame {
 
@@ -111,18 +113,17 @@ public class ViewItemForm extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         try {
-            String SQL = "SELECT * FROM item";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            ResultSet rst = stm.executeQuery();
+            ArrayList<Item>itemList = ItemController.viewItem();
             DefaultTableModel dtm= (DefaultTableModel) JTable.getModel();
             dtm.setRowCount(0);
-            while(rst.next()){
-                Object[] rowDat={rst.getString("code"),rst.getString("description"),rst.getDouble("unitprice"),rst.getInt("qtyOnHand")};
+            
+            for (Item item : itemList) {
+                
+                Object[] rowDat={item.getCode(),item.getDescription(),item.getUnitPrice(),item.getQtyOnHand()};
                 dtm.addRow(rowDat);
-                //JOptionPane.showMessageDialog(this, "Updated");
             }
+         
+            
             JOptionPane.showMessageDialog(this, "Updated");
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());

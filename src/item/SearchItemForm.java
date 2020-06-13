@@ -1,4 +1,4 @@
-package thogakade;
+package item;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import thogakade.DBConnection;
 
 public class SearchItemForm extends javax.swing.JFrame {
 
@@ -202,24 +203,20 @@ public class SearchItemForm extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
-            String SQL = "SELECT * FROM item WHERE code=?";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, itemCodeTextField.getText());
-            ResultSet resultSet = stm.executeQuery();
+            String code = itemCodeTextField.getText();
+            Item item = ItemController.searchItem(code);
             
-            if (resultSet.next()) {
-                itemDesTextField.setText(resultSet.getString("description"));
-                itemUnitPriceTextField.setText(resultSet.getString("unitprice"));
-                itemQtdOnHandlTextField.setText(resultSet.getString("qtyonhand"));
+            if (item!=null) {
+                itemDesTextField.setText(item.getDescription());
+                itemUnitPriceTextField.setText(item.getUnitPrice()+"");
+                itemQtdOnHandlTextField.setText(item.getQtyOnHand()+"");
                 JOptionPane.showMessageDialog(this, "Search Successful");
             }else{
                 itemCodeTextField.setText("");
                 itemDesTextField.setText("");
                 itemUnitPriceTextField.setText("");
                 itemQtdOnHandlTextField.setText("");
-                JOptionPane.showMessageDialog(this, "Search Unsuccessful");
+                JOptionPane.showMessageDialog(this, "No item found for code "+code);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());

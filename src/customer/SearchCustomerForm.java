@@ -1,17 +1,18 @@
-package thogakade;
+package customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class AddItemForm extends javax.swing.JFrame {
+public class SearchCustomerForm extends javax.swing.JFrame {
 
-    public AddItemForm() {
+    public SearchCustomerForm() {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
@@ -23,66 +24,66 @@ public class AddItemForm extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        itemCodeTextField = new javax.swing.JTextField();
+        cusIdTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        itemDesTextField = new javax.swing.JTextField();
+        cusNameTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        itemUnitPriceTextField = new javax.swing.JTextField();
+        cusAddTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        itemQtdOnHandlTextField = new javax.swing.JTextField();
+        cusSalTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        okButton = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Add Item");
+        setTitle("Search Customer");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Add a new Item");
+        jLabel1.setText("Search Customer");
         jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Item Code ");
+        jLabel2.setText("Customer ID ");
 
-        itemCodeTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        itemCodeTextField.addActionListener(new java.awt.event.ActionListener() {
+        cusIdTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cusIdTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCodeTextFieldActionPerformed(evt);
+                cusIdTextFieldActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Item Description");
+        jLabel3.setText("Customer Name");
 
-        itemDesTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        itemDesTextField.addActionListener(new java.awt.event.ActionListener() {
+        cusNameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cusNameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemDesTextFieldActionPerformed(evt);
+                cusNameTextFieldActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Item Unit Price ");
+        jLabel4.setText("Customer Address ");
 
-        itemUnitPriceTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        itemUnitPriceTextField.addActionListener(new java.awt.event.ActionListener() {
+        cusAddTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cusAddTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemUnitPriceTextFieldActionPerformed(evt);
+                cusAddTextFieldActionPerformed(evt);
             }
         });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("Quantity on Hand    ");
+        jLabel5.setText("Customer Salary    ");
 
-        itemQtdOnHandlTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        itemQtdOnHandlTextField.addActionListener(new java.awt.event.ActionListener() {
+        cusSalTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cusSalTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemQtdOnHandlTextFieldActionPerformed(evt);
+                cusSalTextFieldActionPerformed(evt);
             }
         });
 
@@ -98,11 +99,11 @@ public class AddItemForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText(":");
 
-        okButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        okButton.setText("Ok");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        searchButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+                searchButtonActionPerformed(evt);
             }
         });
 
@@ -119,15 +120,17 @@ public class AddItemForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(113, 113, 113)
+                .addGap(76, 76, 76)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -138,15 +141,15 @@ public class AddItemForm extends javax.swing.JFrame {
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(itemDesTextField)
-                                    .addComponent(itemCodeTextField)
-                                    .addComponent(itemUnitPriceTextField)
-                                    .addComponent(itemQtdOnHandlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cusNameTextField)
+                                    .addComponent(cusIdTextField)
+                                    .addComponent(cusAddTextField)
+                                    .addComponent(cusSalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,77 +158,71 @@ public class AddItemForm extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(itemCodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cusIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(itemDesTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cusNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(itemUnitPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cusAddTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(itemQtdOnHandlTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cusSalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(searchButton))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemCodeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemCodeTextFieldActionPerformed
+    private void cusIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusIdTextFieldActionPerformed
+        searchButtonActionPerformed(evt);
+    }//GEN-LAST:event_cusIdTextFieldActionPerformed
 
-    private void itemDesTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDesTextFieldActionPerformed
+    private void cusNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusNameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_itemDesTextFieldActionPerformed
+    }//GEN-LAST:event_cusNameTextFieldActionPerformed
 
-    private void itemUnitPriceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUnitPriceTextFieldActionPerformed
+    private void cusAddTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusAddTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_itemUnitPriceTextFieldActionPerformed
+    }//GEN-LAST:event_cusAddTextFieldActionPerformed
 
-    private void itemQtdOnHandlTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemQtdOnHandlTextFieldActionPerformed
+    private void cusSalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusSalTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_itemQtdOnHandlTextFieldActionPerformed
+    }//GEN-LAST:event_cusSalTextFieldActionPerformed
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
-            String SQL = "INSERT INTO item VALUES(?,?,?,?)";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, itemCodeTextField.getText());
-            stm.setObject(2, itemDesTextField.getText());
-            stm.setObject(3, Double.parseDouble(itemUnitPriceTextField.getText()));
-            stm.setObject(4, Integer.parseInt(itemQtdOnHandlTextField.getText()));
-            int res = stm.executeUpdate();
-            
-            if (res>0) {
-                itemCodeTextField.setText("");
-                itemDesTextField.setText("");
-                itemUnitPriceTextField.setText("");
-                itemQtdOnHandlTextField.setText("");
-                JOptionPane.showMessageDialog(this, "Item Added Success");
+
+            String id = cusIdTextField.getText();
+            Customer customer = CustomerController.searchCustomer(id);
+            if (customer!=null) {
+                cusNameTextField.setText(customer.getName());
+                cusAddTextField.setText(customer.getAddress());
+                cusSalTextField.setText(customer.getSalary()+"");
             }else{
-                JOptionPane.showMessageDialog(this, "Item is not added");
+                cusNameTextField.setText("");
+                cusAddTextField.setText("");
+                cusSalTextField.setText("");
+                JOptionPane.showMessageDialog(this, "No customer found...");
             }
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
         
-    }//GEN-LAST:event_okButtonActionPerformed
+    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         //System.exit(0);
@@ -233,12 +230,13 @@ public class AddItemForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField itemCodeTextField;
-    private javax.swing.JTextField itemDesTextField;
-    private javax.swing.JTextField itemQtdOnHandlTextField;
-    private javax.swing.JTextField itemUnitPriceTextField;
+    private javax.swing.JTextField cusAddTextField;
+    private javax.swing.JTextField cusIdTextField;
+    private javax.swing.JTextField cusNameTextField;
+    private javax.swing.JTextField cusSalTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -248,6 +246,6 @@ public class AddItemForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JButton okButton;
+    private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,17 +1,18 @@
-package thogakade;
+package customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class AddCustomerForm extends javax.swing.JFrame {
+public class DeleteCustomerForm extends javax.swing.JFrame {
 
-    public AddCustomerForm() {
+    public DeleteCustomerForm() {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
@@ -34,15 +35,15 @@ public class AddCustomerForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        okButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Add Customer");
+        setTitle("Delete Customer");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Add a new Customer");
+        jLabel1.setText("Delete Customer");
         jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
@@ -98,11 +99,11 @@ public class AddCustomerForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText(":");
 
-        okButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        okButton.setText("Ok");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        deleteButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+                deleteButtonActionPerformed(evt);
             }
         });
 
@@ -145,7 +146,7 @@ public class AddCustomerForm extends javax.swing.JFrame {
                                     .addComponent(cusAddTextField)
                                     .addComponent(cusSalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(25, Short.MAX_VALUE))
@@ -178,7 +179,7 @@ public class AddCustomerForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
-                    .addComponent(okButton))
+                    .addComponent(deleteButton))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -186,7 +187,20 @@ public class AddCustomerForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cusIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusIdTextFieldActionPerformed
-        // TODO add your handling code here:
+        try {
+            String id = cusIdTextField.getText();
+            Customer customer = CustomerController.searchCustomer(id);
+
+            if (customer!=null) {
+                cusNameTextField.setText(customer.getName());
+                cusAddTextField.setText(customer.getAddress());
+                cusSalTextField.setText(customer.getSalary()+"");
+            }else{
+                JOptionPane.showMessageDialog(this, "No customer found...");
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }//GEN-LAST:event_cusIdTextFieldActionPerformed
 
     private void cusNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cusNameTextFieldActionPerformed
@@ -201,36 +215,31 @@ public class AddCustomerForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cusSalTextFieldActionPerformed
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             String id = cusIdTextField.getText();
-            String name = cusNameTextField.getText();
-            String address = cusAddTextField.getText();
-            double salary = Double.parseDouble(cusSalTextField.getText());
-            
-//            Customer customer = new Customer(id, name, address, salary);
-//            boolean isAdded = CustomerController.addCustomer(customer);
-            boolean isAdded = CustomerController.addCustomer(new Customer(id, name, address, salary));
-
-            if (isAdded) {
+            boolean isDeleted = CustomerController.deleteCustomer(id);
+                     
+            if (isDeleted) {
+                JOptionPane.showMessageDialog(this, "Deleted");
                 cusIdTextField.setText("");
                 cusNameTextField.setText("");
                 cusAddTextField.setText("");
                 cusSalTextField.setText("");
-                JOptionPane.showMessageDialog(this, "Added Success");
+            }else{
+                JOptionPane.showMessageDialog(this, "Delete Fail");
             }
         } catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
-        
-    }//GEN-LAST:event_okButtonActionPerformed
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        //System.exit(0);
         dispose();
+       //System.exit(0);     
     }//GEN-LAST:event_cancelButtonActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -239,6 +248,7 @@ public class AddCustomerForm extends javax.swing.JFrame {
     private javax.swing.JTextField cusIdTextField;
     private javax.swing.JTextField cusNameTextField;
     private javax.swing.JTextField cusSalTextField;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -248,6 +258,5 @@ public class AddCustomerForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
 }

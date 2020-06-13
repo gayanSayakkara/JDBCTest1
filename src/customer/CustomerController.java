@@ -1,4 +1,4 @@
-package thogakade;
+package customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import thogakade.DBConnection;
 
 public class CustomerController {
     public static boolean addCustomer(Customer customer) throws SQLException, ClassNotFoundException{

@@ -1,4 +1,4 @@
-package thogakade;
+package customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

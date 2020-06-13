@@ -1,4 +1,4 @@
-package thogakade;
+package item;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import thogakade.DBConnection;
 
 public class DeleteItemForm extends javax.swing.JFrame {
 
@@ -186,17 +187,13 @@ public class DeleteItemForm extends javax.swing.JFrame {
 
     private void itemCodeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeTextFieldActionPerformed
         try {
-            String SQL = "SELECT * FROM item WHERE code=?";
-            DBConnection dBConnection = DBConnection.getInstance();
-            Connection connection = dBConnection.getConnection();
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, itemCodeTextField.getText());
-            ResultSet resultSet = stm.executeQuery();
+            String code = itemCodeTextField.getText();
+            Item item = ItemController.searchItem(code);
             
-            if (resultSet.next()) {
-                itemDesTextField.setText(resultSet.getString("description"));
-                itemUnitPriceTextField.setText(resultSet.getString("unitprice"));
-                itemQtdOnHandlTextField.setText(resultSet.getString("qtyonhand"));
+            if (item!=null) {
+                itemDesTextField.setText(item.getDescription());
+                itemUnitPriceTextField.setText(item.getUnitPrice()+"");
+                itemQtdOnHandlTextField.setText(item.getQtyOnHand()+"");
             }else{
                 itemCodeTextField.setText("");
                 itemDesTextField.setText("");
@@ -223,14 +220,10 @@ public class DeleteItemForm extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
-            String SQL = "DELETE FROM item WHERE code=?";
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ThogaKade", "root", "mysql");
-            PreparedStatement stm = connection.prepareStatement(SQL);
-            stm.setObject(1, itemCodeTextField.getText());
-            int result = stm.executeUpdate();
+            String code = itemCodeTextField.getText();
+            boolean isDeleted = ItemController.deleteCustomer(code);
             
-            if (result>0) {
+            if (isDeleted) {
                 itemCodeTextField.setText("");
                 itemDesTextField.setText("");
                 itemUnitPriceTextField.setText("");
